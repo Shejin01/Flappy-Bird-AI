@@ -1,19 +1,30 @@
 #include "Pipe.h"
 
-double Pipe::width = 5;
-double Pipe::height = 50;
+double Pipe::halfWidth = 2.5;
+double Pipe::halfHeight = 25;
 double Pipe::xVelocity = -20;
+sf::Texture Pipe::texture;
+sf::Sprite Pipe::sprite;
 
-Pipe::Pipe(double x, double y)
-	: x(x), y(y) {}
+Pipe::Pipe(double x, double y, bool flipTexture)
+	: x(x), y(y), flipTexture(flipTexture) {}
 
 void Pipe::Update(double dt) {
 	x += xVelocity * dt;
 }
 
+void Pipe::SetTexture(std::string texturePath) {
+	if (!texture.loadFromFile(texturePath)) {
+		std::cout << "Failed to open texture at path: " << texturePath << '\n';
+	}
+	sprite.setTexture(texture);
+	sprite.setOrigin(6, 50);
+	sprite.setScale(0.5, 0.5);
+}
+
 void Pipe::Draw(sf::RenderWindow& window) {
-	sf::RectangleShape shape(sf::Vector2f(width, height));
-	shape.setFillColor(sf::Color::Green);
-	shape.setPosition(x, y);
-	window.draw(shape);
+	sprite.setPosition(x, y);
+	if (flipTexture) sprite.setScale(0.5, -0.5);
+	window.draw(sprite);
+	if (flipTexture) sprite.setScale(0.5, 0.5);
 }
