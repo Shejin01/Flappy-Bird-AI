@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/assets/Background/Background.aseprite
+/assets/Background/Background_Large.aseprite
+/assets/Objects/Bird.aseprite
+/assets/Objects/Pipe.aseprite
