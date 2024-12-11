@@ -13,30 +13,99 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{c2c9371d-f752-4446-8b08-d542efe1bf55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{d0a769c1-da14-468d-b855-5a2a20a2c694}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NeuralNetwork">
+      <UniqueIdentifier>{ecd361f4-b33e-4c46-9ac2-7b69230793d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NeuralNetwork\Maths">
+      <UniqueIdentifier>{d02bbaf0-989b-4269-adb4-b7f309bb8950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\NeuralNetwork">
+      <UniqueIdentifier>{ff86e62a-18a7-4dcc-b201-bf9f8cc3a340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\NeuralNetwork\Maths">
+      <UniqueIdentifier>{2b2c9012-62c3-4fe5-9ffd-fa1c351d314e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bird.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Game\Bird.cpp">
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipe.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Game\Pipe.cpp">
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="src\Random.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\NeuralNetwork\ActivationFunction.cpp">
+      <Filter>Source Files\NeuralNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NeuralNetwork\Cost.cpp">
+      <Filter>Source Files\NeuralNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NeuralNetwork\Layer.cpp">
+      <Filter>Source Files\NeuralNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NeuralNetwork\ModelExporter.cpp">
+      <Filter>Source Files\NeuralNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NeuralNetwork\NeuralNetwork.cpp">
+      <Filter>Source Files\NeuralNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NeuralNetwork\Maths\Vector.cpp">
+      <Filter>Source Files\NeuralNetwork\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NeuralNetwork\Maths\Random.cpp">
+      <Filter>Source Files\NeuralNetwork\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NeuralNetwork\Maths\Matrix.cpp">
+      <Filter>Source Files\NeuralNetwork\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Population.cpp">
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Bird.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Game\Bird.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pipe.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Game\Pipe.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\Random.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Game\Population.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NeuralNetwork\Maths\Matrix.h">
+      <Filter>Header Files\NeuralNetwork\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NeuralNetwork\Maths\Vector.h">
+      <Filter>Header Files\NeuralNetwork\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NeuralNetwork\Maths\Random.h">
+      <Filter>Header Files\NeuralNetwork\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NeuralNetwork\ActivationFunction.h">
+      <Filter>Header Files\NeuralNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NeuralNetwork\Cost.h">
+      <Filter>Header Files\NeuralNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NeuralNetwork\Dataset.h">
+      <Filter>Header Files\NeuralNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NeuralNetwork\Layer.h">
+      <Filter>Header Files\NeuralNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NeuralNetwork\ModelExporter.h">
+      <Filter>Header Files\NeuralNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NeuralNetwork\NeuralNetwork.h">
+      <Filter>Header Files\NeuralNetwork</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

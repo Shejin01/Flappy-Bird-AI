@@ -1,8 +1,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "Bird.h"
-#include "Pipe.h"
-#include "Random.h"
+#include "Game/Bird.h"
+#include "Game/Pipe.h"
+#include "Game/Population.h"
 #include <vector>
 
 const int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
@@ -10,11 +10,12 @@ const int WORLD_WIDTH = 80, WORLD_HEIGHT = 60;
 const int FPS = 60;
 double jumpVelocity = 20;
 double dt = 1.0 / (double)FPS;
-double pipeHalfGap = 5;
+double pipeHalfGap = 7;
 int pipeSpawnTime = 2 * FPS; // seconds * (frames / second)
+double mutationRate = 0.01;
 
 void GenerateTwoPipes(std::vector<Pipe>* pipes) {
-	double y = RandomFromRange(10, 50);
+	double y = RandomFromRange(5 + pipeHalfGap, WORLD_HEIGHT - 5 - pipeHalfGap);
 	pipes->push_back(Pipe(WORLD_WIDTH + Pipe::halfWidth, y - Pipe::halfHeight - pipeHalfGap));
 	pipes->push_back(Pipe(WORLD_WIDTH + Pipe::halfWidth, y + Pipe::halfHeight + pipeHalfGap, true));
 }
@@ -28,7 +29,8 @@ int main() {
 	sf::View view(sf::FloatRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT));
 	window.setView(view);
 
-	Bird bird(30, sf::Color::Yellow, "assets/Objects/Bird.png");
+	Bird::InitTextures("assets/Objects/Bird.png");
+	Population population(500);
 	std::vector<Pipe> pipes;
 	GenerateTwoPipes(&pipes);
 
@@ -51,16 +53,12 @@ int main() {
 		bgdSprites[i].setTextureRect(sf::IntRect(0, 0, 1280, 240));
 	}
 
-	std::cout <<
-		"Controls:\n"
-		"Space - Jump\n"
-		"R     - Restart\n"
-		"Esc   - Quit\n\n";
+	std::cout << "Generation - 0\n";
 
 	int frame = 0;
 	int score = 0;
 	int highScore = 0;
-	bool gameOver = false;
+	int generation = 0;
 	while (window.isOpen()) {
 		// Handle Events
 		/*
@@ -79,26 +77,32 @@ int main() {
 				case sf::Keyboard::Escape:
 					window.close();
 					break;
-				case sf::Keyboard::Space:
+				/*case sf::Keyboard::Space:
 					bird.Jump(jumpVelocity);
-					break;
-				case sf::Keyboard::R:
+					break;*/
+				/*case sf::Keyboard::R:
 					// Restart
-					bird.y = 30;
-					bird.yVelocity = 0;
+					population.Restart();
 					pipes.clear();
 					GenerateTwoPipes(&pipes);
 					frame = 0;
-					score = 0;
-					gameOver = false;
-				}
+					score = 0;*/
 			}
 		}
 
 		// Game Processes
-		if (!gameOver) {
+		if (!population.IsPopulationDead()) {
+			if (pipes.size()) {
+				for (auto& pipe : pipes) {
+					if (pipe.x < Bird::x - Pipe::halfWidth) continue;
+					double gapY = pipe.y + Pipe::halfHeight + pipeHalfGap;
+					population.Evaluate(pipe.x, gapY, jumpVelocity);
+					break;
+				}
+			}
+
 			// Update Physics
-			bird.Update(dt);
+			population.Update(dt);
 			for (auto& pipe : pipes) pipe.Update(dt);
 
 			// Spawn Pipe Timer
@@ -123,11 +127,7 @@ int main() {
 				if (pipes[0].x < -Pipe::halfWidth) pipes.erase(pipes.begin(), pipes.begin() + 1);
 
 				// Collision Detection
-				bool isCollision = bird.DetectPipeCollision(&pipes[0]) || bird.DetectPipeCollision(&pipes[1]) || bird.DetectRoofCollision(60, 0);
-				if (isCollision) {
-					gameOver = true;
-					highScore = fmax(score, highScore);
-				}
+				population.DetectCollision(&pipes[0], &pipes[1], score);
 			}
 
 			// Move Background
@@ -138,11 +138,20 @@ int main() {
 
 			frame++;
 		}
+		else {
+			population.Evolve(mutationRate);
+			pipes.clear();
+			GenerateTwoPipes(&pipes);
+			frame = 0;
+			score = 0;
+			generation++;
+			std::cout << "\nGeneration - " << generation << '\n';
+		}
 
 		// Render
 		window.clear(); 
 		for (auto& sprite : bgdSprites) window.draw(sprite);
-		bird.Draw(window);
+		population.Draw(window);
 		for (auto& pipe : pipes) pipe.Draw(window);
 		window.display();
 	}

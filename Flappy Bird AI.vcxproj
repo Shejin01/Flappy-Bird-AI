@@ -147,15 +147,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Bird.cpp" />
+    <ClCompile Include="src\Game\Bird.cpp" />
+    <ClCompile Include="src\Game\Population.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Pipe.cpp" />
-    <ClCompile Include="src\Random.cpp" />
+    <ClCompile Include="src\Game\Pipe.cpp" />
+    <ClCompile Include="src\NeuralNetwork\ActivationFunction.cpp" />
+    <ClCompile Include="src\NeuralNetwork\Cost.cpp" />
+    <ClCompile Include="src\NeuralNetwork\Layer.cpp" />
+    <ClCompile Include="src\NeuralNetwork\Maths\Matrix.cpp" />
+    <ClCompile Include="src\NeuralNetwork\Maths\Random.cpp" />
+    <ClCompile Include="src\NeuralNetwork\Maths\Vector.cpp" />
+    <ClCompile Include="src\NeuralNetwork\ModelExporter.cpp" />
+    <ClCompile Include="src\NeuralNetwork\NeuralNetwork.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Bird.h" />
-    <ClInclude Include="src\Pipe.h" />
-    <ClInclude Include="src\Random.h" />
+    <ClInclude Include="include\NeuralNetwork\ActivationFunction.h" />
+    <ClInclude Include="include\NeuralNetwork\Cost.h" />
+    <ClInclude Include="include\NeuralNetwork\Dataset.h" />
+    <ClInclude Include="include\NeuralNetwork\Layer.h" />
+    <ClInclude Include="include\NeuralNetwork\Maths\Matrix.h" />
+    <ClInclude Include="include\NeuralNetwork\Maths\Random.h" />
+    <ClInclude Include="include\NeuralNetwork\Maths\Vector.h" />
+    <ClInclude Include="include\NeuralNetwork\ModelExporter.h" />
+    <ClInclude Include="include\NeuralNetwork\NeuralNetwork.h" />
+    <ClInclude Include="src\Game\Bird.h" />
+    <ClInclude Include="src\Game\Pipe.h" />
+    <ClInclude Include="src\Game\Population.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
