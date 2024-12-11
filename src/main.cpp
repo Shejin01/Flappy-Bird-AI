@@ -80,13 +80,14 @@ int main() {
 				/*case sf::Keyboard::Space:
 					bird.Jump(jumpVelocity);
 					break;*/
-				/*case sf::Keyboard::R:
-					// Restart
-					population.Restart();
-					pipes.clear();
-					GenerateTwoPipes(&pipes);
-					frame = 0;
-					score = 0;*/
+					/*case sf::Keyboard::R:
+						// Restart
+						population.Restart();
+						pipes.clear();
+						GenerateTwoPipes(&pipes);
+						frame = 0;
+						score = 0;*/
+				}
 			}
 		}
 

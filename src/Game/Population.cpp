@@ -11,7 +11,6 @@ void Population::Mutate(Bird* bird, double mutationRate) {
 		for (int i = 0; i < layer.weights.rows; i++) {
 			for (int j = 0; j < layer.weights.cols; j++) {
 				if (RandomFromRange(0, 1000) * 0.001f > mutationRate) continue;
-				std::cout << "a";
 				layer.weights(i, j) += ((double)RandomFromRange(0, 200) - 100) * 0.5;
 			}
 		}
