@@ -1,6 +1,7 @@
 #include "Population.h"
 
 Population::Population(int populationSize) {
+	aliveAmount = populationSize;
 	for (int i = 0; i < populationSize; i++) {
 		birds.push_back(Bird(yStartPos));
 	}
@@ -63,7 +64,7 @@ void Population::Evolve(double mutationRate) {
 	std::sort(birds.begin(), birds.end(), [](Bird& a, Bird& b) { return a.score > b.score; });
 	int numberOfElites = birds.size() * 0.1;
 	std::vector<Bird> newBirds(birds.begin(), birds.begin() + numberOfElites);
-	int numberOfReproducers = birds.size() * 0.5;
+	int numberOfReproducers = birds.size() * 0.2;
 
 	// Insert the new children
 	for (int i = 0; i < birds.size() - numberOfElites; i += 2) {
@@ -86,7 +87,12 @@ bool Population::IsPopulationDead() {
 	return true;
 }
 
+int Population::GetAliveAmount() const {
+	return aliveAmount;
+}
+
 void Population::Restart() {
+	aliveAmount = birds.size();
 	for (auto& bird : birds) {
 		bird.isDead = false;
 		bird.xOffset = 0;
@@ -106,6 +112,7 @@ void Population::DetectCollision(Pipe* pipe1, Pipe* pipe2, int score) {
 		if (isCollision && !bird.isDead) {
 			bird.isDead = true;
 			bird.score = score;
+			aliveAmount--;
 		}
 	}
 }

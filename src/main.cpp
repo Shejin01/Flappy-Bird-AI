@@ -8,6 +8,7 @@
 const int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
 const int WORLD_WIDTH = 80, WORLD_HEIGHT = 60;
 const int FPS = 60;
+const int SUBSTEPS = 10;
 double jumpVelocity = 20;
 double dt = 1.0 / (double)FPS;
 double pipeHalfGap = 7;
@@ -30,7 +31,7 @@ int main() {
 	window.setView(view);
 
 	Bird::InitTextures("assets/Objects/Bird.png");
-	Population population(500);
+	Population population(1000);
 	std::vector<Pipe> pipes;
 	GenerateTwoPipes(&pipes);
 
@@ -92,61 +93,63 @@ int main() {
 		}
 
 		// Game Processes
-		if (!population.IsPopulationDead()) {
-			if (pipes.size()) {
-				for (auto& pipe : pipes) {
-					if (pipe.x < Bird::x - Pipe::halfWidth) continue;
-					double gapY = pipe.y + Pipe::halfHeight + pipeHalfGap;
-					population.Evaluate(pipe.x, gapY, jumpVelocity);
-					break;
-				}
-			}
-
-			// Update Physics
-			population.Update(dt);
-			for (auto& pipe : pipes) pipe.Update(dt);
-
-			// Spawn Pipe Timer
-			if (frame == pipeSpawnTime) {
-				GenerateTwoPipes(&pipes);
-				frame = 0;
-			}
-			if (pipes.size()) {
-				// Score Counter
-				for (auto pipe = pipes.begin(); pipe != pipes.end(); pipe += 2) {
-					if (pipe->x > Bird::x + Bird::radius) break;
-					if (!pipe->isEntered && pipe->x > Bird::x - Bird::radius) {
-						pipe->isEntered = true;
-						score++;
-						highScore = fmax(score, highScore);
-						std::cout << "Score: " << score << ", High Score: " << highScore << '\n';
+		for (int i = 0; i < SUBSTEPS; i++) {
+			if (!population.IsPopulationDead()) {
+				if (pipes.size()) {
+					for (auto& pipe : pipes) {
+						if (pipe.x < Bird::x - Pipe::halfWidth) continue;
+						double gapY = pipe.y + Pipe::halfHeight + pipeHalfGap;
+						population.Evaluate(pipe.x, gapY, jumpVelocity);
 						break;
 					}
 				}
 
-				// Pipe Removal System
-				if (pipes[0].x < -Pipe::halfWidth) pipes.erase(pipes.begin(), pipes.begin() + 1);
+				// Update Physics
+				population.Update(dt);
+				for (auto& pipe : pipes) pipe.Update(dt);
 
-				// Collision Detection
-				population.DetectCollision(&pipes[0], &pipes[1], score);
+				// Spawn Pipe Timer
+				if (frame == pipeSpawnTime) {
+					GenerateTwoPipes(&pipes);
+					frame = 0;
+				}
+				if (pipes.size()) {
+					// Score Counter
+					for (auto pipe = pipes.begin(); pipe != pipes.end(); pipe += 2) {
+						if (pipe->x > Bird::x + Bird::radius) break;
+						if (!pipe->isEntered && pipe->x > Bird::x - Bird::radius) {
+							pipe->isEntered = true;
+							score++;
+							highScore = fmax(score, highScore);
+							std::cout << "Score: " << score << ", High Score: " << highScore << ", Population Size: " << population.GetAliveAmount() << '\n';
+							break;
+						}
+					}
+
+					// Pipe Removal System
+					if (pipes[0].x < -Pipe::halfWidth) pipes.erase(pipes.begin(), pipes.begin() + 1);
+
+					// Collision Detection
+					population.DetectCollision(&pipes[0], &pipes[1], score);
+				}
+
+				// Move Background
+				for (int j = 0; j < bgdSprites.size(); j++) {
+					bgdSprites[j].move(bgdSpeeds[j] * dt, 0);
+					if (bgdSprites[j].getPosition().x < -160) bgdSprites[j].setPosition(0, 0);
+				}
+
+				frame++;
 			}
-
-			// Move Background
-			for (int i = 0; i < bgdSprites.size(); i++) {
-				bgdSprites[i].move(bgdSpeeds[i] * dt, 0);
-				if (bgdSprites[i].getPosition().x < -160) bgdSprites[i].setPosition(0, 0);
+			else {
+				population.Evolve(mutationRate);
+				pipes.clear();
+				GenerateTwoPipes(&pipes);
+				frame = 0;
+				score = 0;
+				generation++;
+				std::cout << "\nGeneration - " << generation << '\n';
 			}
-
-			frame++;
-		}
-		else {
-			population.Evolve(mutationRate);
-			pipes.clear();
-			GenerateTwoPipes(&pipes);
-			frame = 0;
-			score = 0;
-			generation++;
-			std::cout << "\nGeneration - " << generation << '\n';
 		}
 
 		// Render

@@ -8,6 +8,7 @@
 class Population {
 private:
 	double yStartPos = 30;
+	int aliveAmount;
 public:
 	std::vector<Bird> birds;
 
@@ -17,6 +18,7 @@ public:
 	void Evaluate(double gapX, double gapY, double jumpVelocity);
 	void Evolve(double mutationRate);
 	bool IsPopulationDead();
+	int GetAliveAmount() const;
 
 	void Restart();
 	void Update(double dt);
